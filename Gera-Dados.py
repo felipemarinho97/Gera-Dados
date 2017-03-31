@@ -7,18 +7,19 @@ from datetime import datetime
 import random
 import sys
 import csv
+from tools import sqlconverter
 
 now = datetime.now()
 
 class Database:
-	file1 = open("nome.dat", "r")
-	file2 = open("sobrenome.dat", "r")
-	file3 = open("municipios.csv", "rb")
+	file1 = open("data/nome.dat", "r")
+	file2 = open("data/sobrenome.dat", "r")
+	#file3 = open("data/municipios.csv", "rb")
 	
 	def __init__(self):
 		self.nomes = self.file1.read().split()
 		self.sobrenomes = self.file2.read().split()
-		self.cidades = self.readCSV(self.file3)
+		self.cidades = sqlconverter.read("data/dados.db")
 
 	def readCSV(self,file):
 		l = []
@@ -41,7 +42,7 @@ class Pessoa:
 		self.sobrenome = self.db.sobrenomes[random.randint(0,len(self.db.sobrenomes)-1)]
 		self.idade = str(random.randint(int(i),int(f)))
 		self.email = self.criaEmail()
-		self.cidade = self.db.cidades[str(random.randint(0,len(self.db.cidades)-1))]
+		self.cidade = self.db.cidades
 
 	def criaEmail(self, sufix="@gmail.com"):
 		ano = str(now.year - int(self.idade))
@@ -58,4 +59,4 @@ if __name__ == "__main__":
 		pessoa = Pessoa()
 	print pessoa.nome + " " + pessoa.sobrenome + " " + pessoa.idade
 	print pessoa.email
-	print pessoa.cidade[3] + " - " + pessoa.cidade[0]
+	print pessoa.cidade[0] + " - " + pessoa.cidade[1]

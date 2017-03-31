@@ -50,7 +50,7 @@ def write():
 	for e in xrange(5570):
 		l.append(file.readline())
 
-	conn = sqlite3.connect("gera-dados.db")
+	conn = sqlite3.connect("..data/dados.db")
 
 	c = conn.cursor()
 
@@ -78,8 +78,8 @@ def write():
 	# Just be sure any changes have been committed or they will be lost.
 	conn.close()
 
-def read():
-	conn = sqlite3.connect("gera-dados.db")
+def read(path="../data/dados.db"):
+	conn = sqlite3.connect(path)
 
 	c = conn.cursor()
 
@@ -87,7 +87,7 @@ def read():
 		WHERE ID = '%i'""" % random.randint(0,5500))
 	
 	for e in c.fetchall():
-		print e
+		return e
 
-
-read()
+if __name__ == "__main__":
+	read()
