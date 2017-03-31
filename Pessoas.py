@@ -10,35 +10,38 @@ import csv
 
 now = datetime.now()
 
-file1 = open("nome.dat", "r")
-file2 = open("sobrenome.dat", "r")
-file3 = open("municipios.csv", "rb")
+class Database:
+	file1 = open("nome.dat", "r")
+	file2 = open("sobrenome.dat", "r")
+	file3 = open("municipios.csv", "rb")
+	
+	def __init__(self):
+		self.nomes = self.file1.read().split()
+		self.sobrenomes = self.file2.read().split()
+		self.cidades = self.readCSV(self.file3)
 
-def readCSV(file):
-	l = []
-	dic = {}
-	reader = csv.reader(file)
-	try:
-		for e in reader:
-			l.append(e)
-	except:
-		pass
-	for i in range(len(l)):
-		dic[str(i)] = l[i]
-	return dic
-
-nomes = file1.read().split()
-sobrenomes = file2.read().split()
-cidades = readCSV(file3)
-
+	def readCSV(self,file):
+		l = []
+		dic = {}
+		reader = csv.reader(file)
+		try:
+			for e in reader:
+				l.append(e)
+		except:
+			pass
+		for i in range(len(l)):
+			dic[str(i)] = l[i]
+		return dic
 
 class Pessoa:
+	db = Database()
+	
 	def __init__(self,i=1,f=100):
-		self.nome = nomes[random.randint(0,len(nomes)-1)]
-		self.sobrenome = sobrenomes[random.randint(0,len(sobrenomes)-1)]
+		self.nome = self.db.nomes[random.randint(0,len(self.db.nomes)-1)]
+		self.sobrenome = self.db.sobrenomes[random.randint(0,len(self.db.sobrenomes)-1)]
 		self.idade = str(random.randint(int(i),int(f)))
 		self.email = self.criaEmail()
-		self.cidade = cidades[str(random.randint(0,len(cidades)-1))]
+		self.cidade = self.db.cidades[str(random.randint(0,len(self.db.cidades)-1))]
 
 	def criaEmail(self, sufix="@gmail.com"):
 		ano = str(now.year - int(self.idade))
